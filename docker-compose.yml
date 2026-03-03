@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  playwright-chromium:
+    image: mcr.microsoft.com/playwright:v1.58.2-jammy
+    command: npx playwright run-server --port 3001 --host 0.0.0.0
+    ports:
+      - "3001:3001"
+    environment:
+      - DISPLAY=:99
+    networks:
+      - playwright-grid
+
+  playwright-firefox:
+    image: mcr.microsoft.com/playwright:v1.58.2-jammy
+    command: npx playwright run-server --port 3002 --host 0.0.0.0
+    ports:
+      - "3002:3002"
+    environment:
+      - DISPLAY=:99
+    networks:
+      - playwright-grid
+
+networks:
+  playwright-grid:
+    driver: bridge
