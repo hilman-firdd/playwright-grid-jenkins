@@ -1,0 +1,17 @@
+# Node modules & build artifacts
+node_modules/
+dist/
+
+# Playwright output
+test-results/
+playwright-report/
+blob-report/
+.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (may contain secrets)
+.env
+.env.local
