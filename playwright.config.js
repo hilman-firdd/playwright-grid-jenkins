@@ -10,7 +10,11 @@ module.exports = defineConfig({
   testMatch: '**/*.spec.js',
   timeout: 30000,
   retries: 1,
-  reporter: [['list'], ['html', { open: 'never' }]],
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    ['allure-playwright', { outputFolder: 'allure-results', suiteTitle: false }],
+  ],
 
   projects: [
     {
