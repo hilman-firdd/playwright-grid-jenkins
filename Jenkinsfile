@@ -109,6 +109,7 @@ pipeline {
                             --endpoint-url ${AWS_ENDPOINT} \
                             --region ${AWS_DEFAULT_REGION} \
                             --acl public-read \
+                            --no-verify-ssl \
                             --delete
 
                         echo "🚀 Uploading Allure report to NOS S3..."
@@ -116,6 +117,7 @@ pipeline {
                             --endpoint-url ${AWS_ENDPOINT} \
                             --region ${AWS_DEFAULT_REGION} \
                             --acl public-read \
+                            --no-verify-ssl \
                             --delete
 
                         echo "✅ Reports uploaded!"
