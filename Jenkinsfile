@@ -13,6 +13,10 @@ pipeline {
         AWS_URL              = 'https://nos.jkt-1.neo.id/playwright-report'
     }
 
+    tools {
+        nodejs 'NodeJS'
+    }
+
     stages {
 
         // ─── Stage 1: Ambil kode dari GitHub ─────────────────────────────────
