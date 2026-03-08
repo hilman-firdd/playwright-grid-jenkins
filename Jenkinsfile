@@ -15,6 +15,10 @@ pipeline {
         // Playwright Grid WebSocket endpoints (container names di Docker network)
         PW_CHROMIUM_WS = 'ws://playwright-pw-playwright-chromium-1:3001'
         PW_FIREFOX_WS  = 'ws://playwright-pw-playwright-firefox-1:3002'
+
+        // Disable AWS CLI v2 automatic checksum (not supported by NOS S3)
+        AWS_REQUEST_CHECKSUM_CALCULATION = 'when_required'
+        AWS_RESPONSE_CHECKSUM_VALIDATION = 'when_required'
     }
 
     tools {
