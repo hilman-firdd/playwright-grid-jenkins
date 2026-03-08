@@ -22,7 +22,7 @@ module.exports = defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         connectOptions: {
-          wsEndpoint: 'ws://localhost:3001',
+          wsEndpoint: 'ws://127.0.0.1:3001',
         },
       },
     },
@@ -31,7 +31,7 @@ module.exports = defineConfig({
       use: {
         ...devices['Desktop Firefox'],
         connectOptions: {
-          wsEndpoint: 'ws://localhost:3002',
+          wsEndpoint: 'ws://127.0.0.1:3002',
         },
       },
     },

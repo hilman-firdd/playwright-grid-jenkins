@@ -4,6 +4,13 @@ pipeline {
     environment {
         // Nama repo GitHub kamu
         GITHUB_REPO = 'hilman-firdd/playwright-grid-jenkins'
+
+        // Neo Object Storage (NOS) - S3 Compatible
+        // Kredensial disimpan di Jenkins Credentials dengan ID 'nos-s3-credentials'
+        AWS_DEFAULT_REGION   = 'idn'
+        AWS_BUCKET           = 'playwright-report'
+        AWS_ENDPOINT         = 'https://nos.jkt-1.neo.id'
+        AWS_URL              = 'https://nos.jkt-1.neo.id/playwright-report'
     }
 
     tools {
@@ -80,7 +87,38 @@ pipeline {
             }
         }
 
-        // ─── Stage 7: Push hasil report ke GitHub (opsional) ─────────────────
+        // ─── Stage 7: Upload Report ke NOS S3 ────────────────────────────────
+        stage('Upload Report to NOS S3') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'nos-s3-credentials',
+                    usernameVariable: 'AWS_ACCESS_KEY_ID',
+                    passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                )]) {
+                    sh '''
+                        echo "🚀 Uploading Playwright report to NOS S3..."
+                        aws s3 sync playwright-report/ s3://${AWS_BUCKET}/playwright-report/ \
+                            --endpoint-url ${AWS_ENDPOINT} \
+                            --region ${AWS_DEFAULT_REGION} \
+                            --acl public-read \
+                            --delete
+
+                        echo "🚀 Uploading Allure report to NOS S3..."
+                        aws s3 sync allure-report/ s3://${AWS_BUCKET}/allure-report/ \
+                            --endpoint-url ${AWS_ENDPOINT} \
+                            --region ${AWS_DEFAULT_REGION} \
+                            --acl public-read \
+                            --delete
+
+                        echo "✅ Reports uploaded!"
+                        echo "🌐 Playwright Report : ${AWS_URL}/playwright-report/index.html"
+                        echo "🌐 Allure Report     : ${AWS_URL}/allure-report/index.html"
+                    '''
+                }
+            }
+        }
+
+        // ─── Stage 8: Push hasil report ke GitHub (opsional) ─────────────────
         stage('Push Allure Report to GitHub') {
             steps {
                 withCredentials([usernamePassword(
