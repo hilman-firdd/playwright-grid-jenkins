@@ -11,6 +11,10 @@ pipeline {
         AWS_BUCKET           = 'playwright-report'
         AWS_ENDPOINT         = 'https://nos.jkt-1.neo.id'
         AWS_URL              = 'https://nos.jkt-1.neo.id/playwright-report'
+
+        // Playwright Grid WebSocket endpoints (container names di Docker network)
+        PW_CHROMIUM_WS = 'ws://playwright-pw-playwright-chromium-1:3001'
+        PW_FIREFOX_WS  = 'ws://playwright-pw-playwright-firefox-1:3002'
     }
 
     tools {
@@ -39,6 +43,8 @@ pipeline {
             steps {
                 sh 'docker compose up -d'
                 sh 'sleep 10' // tunggu container siap
+                // Connect Jenkins container ke playwright grid network agar bisa akses container by name
+                sh 'docker network connect playwright-pw_playwright-grid jenkins || true'
             }
         }
 
@@ -84,6 +90,7 @@ pipeline {
         // ─── Stage 6: Stop Docker Grid ────────────────────────────────────────
         stage('Stop Playwright Grid') {
             steps {
+                sh 'docker network disconnect playwright-pw_playwright-grid jenkins || true'
                 sh 'docker compose down'
             }
         }
