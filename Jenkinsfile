@@ -37,8 +37,8 @@ pipeline {
         // ─── Stage 3: Jalankan Docker Grid ────────────────────────────────────
         stage('Start Playwright Grid') {
             steps {
-                sh 'docker-compose up -d'
-                sh 'sleep 5' // tunggu container siap
+                sh 'docker compose up -d'
+                sh 'sleep 10' // tunggu container siap
             }
         }
 
@@ -84,7 +84,7 @@ pipeline {
         // ─── Stage 6: Stop Docker Grid ────────────────────────────────────────
         stage('Stop Playwright Grid') {
             steps {
-                sh 'docker-compose down'
+                sh 'docker compose down'
             }
         }
 
