@@ -13,10 +13,6 @@ pipeline {
         AWS_URL              = 'https://nos.jkt-1.neo.id/playwright-report'
     }
 
-    tools {
-        nodejs 'NodeJS' // Sesuaikan dengan nama NodeJS di Jenkins Global Tools
-    }
-
     stages {
 
         // ─── Stage 1: Ambil kode dari GitHub ─────────────────────────────────
@@ -69,12 +65,13 @@ pipeline {
             }
             post {
                 always {
-                    allure([
-                        includeProperties: false,
-                        jdk              : '',
-                        results          : [[path: 'allure-results']],
-                        reportBuildPolicy: 'ALWAYS',
-                        report           : 'allure-report'
+                    publishHTML(target: [
+                        allowMissing         : true,
+                        alwaysLinkToLastBuild: true,
+                        keepAll              : true,
+                        reportDir            : 'allure-report',
+                        reportFiles          : 'index.html',
+                        reportName           : 'Allure Report'
                     ])
                 }
             }
